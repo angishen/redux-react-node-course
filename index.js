@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 require('./models/User');
 require('./services/passport');
@@ -11,6 +12,7 @@ mongoose.connect(keys.mongoURI);
 
 const app = express();
 
+app.use(bodyParser.json());
 // tell express to use cookies
 // app.use initiates middleware
 app.use(
@@ -27,6 +29,7 @@ app.use(passport.session());
 // requiring authRoutes file returns a function; this syntax is equiv.
 // to calling authRoutes(app)
 require('./routes/authRoutes')(app);
+require('./routes/billingRoutes')(app);
 
 // check if heroku has assigned a port to run app on
 // otherwise, assign to port 5000 (in dev env)
